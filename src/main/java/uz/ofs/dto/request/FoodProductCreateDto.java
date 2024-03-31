@@ -19,7 +19,7 @@ public class FoodProductCreateDto {
     private Double quantity;
 
     @NotNull(message = "storage period must not null")
-    private LocalDateTime storagePeriod;
+    private String storagePeriod;
 
     @NotBlank(message = "quantity must not null")
     private Long categoryId;

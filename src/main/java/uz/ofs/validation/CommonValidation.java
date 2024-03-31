@@ -107,16 +107,21 @@ public class CommonValidation {
 
     public void validateFoodProduct(FoodProductEntity product) {
 
-        Double quantity = product.getQuantity();
+       validateFoodProductQuantity(product.getQuantity());
+
+       validateFoodProductStoragePeriod(product.getStoragePeriod());
+    }
+
+    private void validateFoodProductQuantity(Double quantity){
         if(quantity==0){
             throw new FoodProductException("The quantity of the product you want to put in the warehouse will not be 0");
         }
+    }
 
-        LocalDateTime storagePeriod = product.getStoragePeriod();
+    private void validateFoodProductStoragePeriod(LocalDateTime storagePeriod){
         if(LocalDateTime.now().isAfter(storagePeriod)){
             throw new FoodProductException("Your product has expired. Food Storage cannot be saved.");
         }
-
     }
 
     public FoodProductEntity validateFoodProduct(Long id){
@@ -124,5 +129,36 @@ public class CommonValidation {
         return foodProductRepository.getFoodById(id).orElseThrow(()-> new NotFoundException(id + "-id not found!"));
     }
 
+    public void validateFoodProductId(Long id){
+        validateID(id);
+        if (!foodProductRepository.existsById(id)){
+            throw new NotFoundException(id+ "-id not found!");
+        }
+    }
 
+
+    public FoodProductEntity validateFoodProductUpdate(FoodProductEntity updateEntity) {
+
+        FoodProductEntity entityDB = validateFoodProduct(updateEntity.getId());
+        validateCategoryId(updateEntity.getCategoryId());
+
+        String name = updateEntity.getName();
+        if(Objects.nonNull(name)){
+            entityDB.setName(name);
+        }
+
+        Double quantity = updateEntity.getQuantity();
+        if(Objects.nonNull(quantity)){
+            validateFoodProductQuantity(quantity);
+            entityDB.setQuantity(quantity);
+        }
+
+        LocalDateTime storagePeriod = updateEntity.getStoragePeriod();
+        if(Objects.nonNull(storagePeriod)){
+            validateFoodProductStoragePeriod(storagePeriod);
+            entityDB.setStoragePeriod(storagePeriod);
+        }
+
+        return entityDB;
+    }
 }
