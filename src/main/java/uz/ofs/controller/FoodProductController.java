@@ -1,8 +1,10 @@
 package uz.ofs.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import uz.ofs.constants.ResponseCode;
 import uz.ofs.constants.ResponseMessage;
@@ -19,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 
 @RestController
+@EnableMethodSecurity
+@SecurityRequirement(name = "Bearer Authentication")
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/food-product")
 public class FoodProductController {

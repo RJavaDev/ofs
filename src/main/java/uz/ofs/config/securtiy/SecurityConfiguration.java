@@ -24,12 +24,9 @@ public class SecurityConfiguration {
     private final LogoutHandler logoutHandler;
 
     private static final String[] WHITE_LIST = new String[]{
-            "/api/v1/auth/**",
+            "/api/v1/auth/login",
             "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/api/v1/category/get/**",
-            "/api/v1/food-product/**",
-            "/api/v1/user/**"
+            "/swagger-ui/**"
     };
 
     @Bean

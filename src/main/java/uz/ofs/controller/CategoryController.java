@@ -17,11 +17,11 @@ import uz.ofs.dto.request.CategoryCreatedRequestDto;
 import uz.ofs.dto.request.CategoryUpdate;
 import uz.ofs.entity.CategoryEntity;
 import uz.ofs.service.CategoryService;
-import org.springframework.validation.annotation.Validated;
 
 
 @RestController
 @EnableMethodSecurity
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api/v1/category")
 @RequiredArgsConstructor
 @Tag(name = "Category Controller", description = "This controller manages the categories.")
@@ -29,7 +29,7 @@ public class CategoryController {
 
     private final CategoryService service;
 
-    @SecurityRequirement(name = "Bearer Authentication")
+
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Add Category", description = "This method adds a new category. If no parentId is provided, the added category will be considered as a parent category.")
     @PostMapping("/add")
@@ -45,7 +45,7 @@ public class CategoryController {
 
     }
 
-    @Operation(summary = "Get Category Tree", description = "This method retrieves the category along with its descendants in a tree structure based on the provided ID.")
+    @Operation(summary = "Get Category Child", description = "This method retrieves the category along with its descendants in a tree structure based on the provided ID.")
     @GetMapping("/get/child/{id}")
     public ApiResponse<Object> getCategoryChildId(@PathVariable Long id) {
 
@@ -59,7 +59,7 @@ public class CategoryController {
 
     }
 
-    @Operation(summary = "Get Category Tree", description = "This method retrieves the category along with its descendants in a tree structure based on the provided ID.")
+    @Operation(summary = "Get Category no child", description = "This method retrieves the category along with its descendants in a tree structure based on the provided ID.")
     @GetMapping("/get/no-child/{id}")
     public ApiResponse<Object> getCategoryId(@PathVariable Long id) {
 
@@ -73,7 +73,6 @@ public class CategoryController {
 
     }
 
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "This method Patch", description = "This method is intended to update the category. Updates Category to the value you provide")
     @PatchMapping("/update")
@@ -89,7 +88,6 @@ public class CategoryController {
 
     }
 
-    @SecurityRequirement(name = "Bearer Authentication")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "This method Delete", description = "This method is category DELETE")
     @DeleteMapping("/deleted/{id}")

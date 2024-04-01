@@ -1,8 +1,11 @@
 package uz.ofs.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 
 
 @RestController
+@EnableMethodSecurity
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 @Tag(name = "Authentication Controller", description = "This Controller for login and register")
@@ -26,6 +30,9 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
+
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "User Registration", description = "This method is used for user registration")
     @PostMapping("/register")
     public ApiResponse<Object> register(@RequestBody @Validated UserCreateRequestDto userDto) {

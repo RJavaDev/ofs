@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    image: image
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ofs
+      SPRING_DATASOURCE_USERNAME: myadmin
+      SPRING_DATASOURCE_PASSWORD: myadmin
+
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      POSTGRES_USER: myadmin
+      POSTGRES_PASSWORD: myadmin
+      POSTGRES_DB: ofs

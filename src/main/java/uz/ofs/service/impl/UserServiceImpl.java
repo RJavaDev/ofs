@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final CommonValidation commonValidation;
 
     @Override
-//    @Cacheable(value = "userCache")
+    @Cacheable(value = "userCache")
     public UserEntity getById(Long id) {
         System.out.println("user servicedan kelyabdi");
         return commonValidation.validateUserId(id);
