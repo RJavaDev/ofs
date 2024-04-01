@@ -11,6 +11,7 @@ import uz.ofs.entity.FoodProductEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @UtilityClass
 public class FoodProductConvert {
@@ -33,8 +34,10 @@ public class FoodProductConvert {
         BeanUtils.copyProperties(dto, entity,"storagePeriod");
 
         String storagePeriod = dto.getStoragePeriod();
-        LocalDateTime localDateTime = LocalDateTimeUtil.parseLocalDateTimeDMY(storagePeriod);
-        entity.setStoragePeriod(localDateTime);
+        if(Objects.nonNull(storagePeriod)){
+            LocalDateTime localDateTime = LocalDateTimeUtil.parseLocalDateTimeDMY(storagePeriod);
+            entity.setStoragePeriod(localDateTime);
+        }
 
         return entity;
     }

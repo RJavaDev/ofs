@@ -8,6 +8,7 @@ public class LoginRequestDto {
 
   @NotBlank(message = "username must not be empty")
   private String username;
+
   @NotBlank(message = "password must not be empty")
   String password;
 }

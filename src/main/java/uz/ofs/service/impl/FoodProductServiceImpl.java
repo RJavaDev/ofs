@@ -14,6 +14,7 @@ import uz.ofs.repository.FoodProductRepository;
 import uz.ofs.service.FoodProductService;
 import uz.ofs.validation.CommonValidation;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -82,6 +83,12 @@ public class FoodProductServiceImpl implements FoodProductService {
         }
 
         return repository.getPageFoodProduct(categoryId, name,pageable);
+    }
+
+    @Override
+    public Integer amountInCategory(Long id) {
+        List<FoodProductEntity> allByCategoryAmount = repository.findAllByCategoryAmount(id);
+        return allByCategoryAmount.size();
     }
 
 

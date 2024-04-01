@@ -1,26 +1,26 @@
 package uz.ofs.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 public class FoodProductCreateDto {
 
-    @NotNull(message = "name must not null")
+    @NotBlank(message = "name must not null")
     private String name;
 
-    @NotBlank(message = "quantity must not null")
+    @NotNull(message = "quantity must not be null")
     private Double quantity;
 
-    @NotNull(message = "storage period must not null")
+    @NotBlank(message = "storage period must not null")
+    @Schema(name = "storagePeriod", example = "\"date\":\"yyyy-MM-dd HH:mm\"}")
     private String storagePeriod;
 
-    @NotBlank(message = "quantity must not null")
+    @NotNull(message = "categoryId must not null")
     private Long categoryId;
 }

@@ -1,9 +1,11 @@
 package uz.ofs.controller.convert;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.data.domain.Page;
 import uz.ofs.constants.Role;
 import uz.ofs.dto.UserDto;
 import uz.ofs.dto.request.UserCreateRequestDto;
+import uz.ofs.dto.request.UserUpdateDto;
 import uz.ofs.entity.UserEntity;
 
 import java.util.Collections;
@@ -40,6 +42,19 @@ public class UserConvert {
         return user;
     }
 
+    public UserEntity convertToEntity(UserUpdateDto dto) {
+        UserEntity user = new UserEntity();
+
+        user.setId(dto.getId());
+        user.setFirstname(dto.getFirstname());
+        user.setLastname(dto.getLastname());
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
+        user.setRoleList(setRoleEnum(dto.getRoleList()));
+
+        return user;
+    }
+
 
     public List<UserDto> convertToDto(List<UserEntity> userEntityList) {
         return userEntityList.stream().map(UserConvert::convertToDto).toList();
@@ -50,5 +65,7 @@ public class UserConvert {
     }
 
 
-
+    public List<UserDto> convertToDto(Page<UserEntity> entity) {
+        return entity.stream().map(UserConvert::convertToDto).toList();
+    }
 }

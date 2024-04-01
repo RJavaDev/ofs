@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import uz.ofs.constants.EntityStatus;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter

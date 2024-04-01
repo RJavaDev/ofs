@@ -12,8 +12,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserCreateRequestDto{
 
     @NotBlank(message = "firstname must not be null!!!")

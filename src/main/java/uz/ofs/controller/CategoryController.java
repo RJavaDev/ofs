@@ -17,6 +17,8 @@ import uz.ofs.dto.request.CategoryCreatedRequestDto;
 import uz.ofs.dto.request.CategoryUpdate;
 import uz.ofs.entity.CategoryEntity;
 import uz.ofs.service.CategoryService;
+import org.springframework.validation.annotation.Validated;
+
 
 @RestController
 @EnableMethodSecurity
@@ -75,7 +77,7 @@ public class CategoryController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "This method Patch", description = "This method is intended to update the category. Updates Category to the value you provide")
     @PatchMapping("/update")
-    public ApiResponse<Object> getUpdate(@RequestBody CategoryUpdate categoryDto) {
+    public ApiResponse<Object> getUpdate(@RequestBody @Validated CategoryUpdate categoryDto) {
 
         CategoryEntity entity = CategoryConvert.convertToEntity(categoryDto);
         boolean isUpdate = service.update(entity);
@@ -97,7 +99,7 @@ public class CategoryController {
 
         return ApiResponse.build()
                 .code(ResponseCode.OK)
-                .body(ResponseMessage.OK)
+                .body(ResponseMessage.DELETE_SUCCESS_MESSAGE)
                 .message(ResponseMessage.OK);
 
     }

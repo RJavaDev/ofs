@@ -11,4 +11,6 @@ public interface FoodProductService extends BaseService<FoodProductEntity>{
     boolean add(FoodProductEntity entity);
 
     Page<FoodProductEntity> getFilterPage(FilterForm filterForm);
+
+    Integer amountInCategory(Long id);
 }

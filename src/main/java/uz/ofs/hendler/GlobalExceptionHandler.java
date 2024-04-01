@@ -10,6 +10,7 @@ import org.webjars.NotFoundException;
 import uz.ofs.constants.ResponseCode;
 import uz.ofs.constants.ResponseMessage;
 import uz.ofs.dto.dtoUtil.ApiResponse;
+import uz.ofs.exception.FoodProductException;
 import uz.ofs.exception.UserUnauthorized;
 import uz.ofs.exception.UserUnauthorizedAction;
 import uz.ofs.exception.UsernameNotFoundException;
@@ -41,18 +42,28 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiResponse<Object> handleException(RuntimeException ex) {
 
         return ApiResponse.build()
-                .code(ResponseCode.BAD_REQUEST)
+                .code(ResponseCode.INTERNAL_SERVER_ERROR)
                 .body(ex.getMessage())
-                .message(ResponseMessage.BAD_REQUEST);
+                .message(ResponseMessage.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiResponse<Object> handleException(UsernameNotFoundException ex) {
+
+        return ApiResponse.build()
+                .code(ResponseCode.NOT_FOUND)
+                .body(ex.getMessage())
+                .message(ResponseMessage.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FoodProductException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<Object> handleException(FoodProductException ex) {
 
         return ApiResponse.build()
                 .code(ResponseCode.BAD_REQUEST)

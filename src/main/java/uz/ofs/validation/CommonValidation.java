@@ -1,6 +1,7 @@
 package uz.ofs.validation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.webjars.NotFoundException;
 import uz.ofs.constants.CategoryType;
@@ -32,6 +33,8 @@ public class CommonValidation {
 
     private final FoodProductRepository foodProductRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     public void validateID(Long id){
         if(Objects.isNull(id) || id<0){
             throw new NotFoundException(id + "-id does not meet the requirement!");
@@ -42,13 +45,14 @@ public class CommonValidation {
     }
 
     public void validateUserByUsername(String username) {
-        if(Objects.nonNull(validateUser(username))){
+        if(Objects.nonNull(userRepository.getUserByUsername(username))){
             throw new UserDataException("User registered with this username!");
         }
     }
 
     public CategoryEntity validateCategory(Long id){
-        return categoryRepository.findByCategoryId(id).orElseThrow(()-> new NotFoundException(id+ "-id not found!"));
+        validateID(id);
+        return categoryRepository.findByCategoryId(id).orElseThrow(() -> new NotFoundException(id + "-id not found!"));
     }
 
     public void validateCategoryId(Long id){
@@ -160,5 +164,42 @@ public class CommonValidation {
         }
 
         return entityDB;
+    }
+
+    public UserEntity validateUserUpdate(UserEntity updateEntity) {
+        UserEntity userDB = validateUserId(updateEntity.getId());
+
+        String username = updateEntity.getUsername();
+        if(Objects.nonNull(username)){
+            if(!Objects.equals(userDB.getUsername(), username)){
+                if(validateUser(username)!=null){
+                    throw new UserDataException(username+"user with such username exists!");
+                }else{
+                    userDB.setUsername(username);
+                }
+            }
+        }
+
+        String firstname = updateEntity.getFirstname();
+        if(Objects.nonNull(firstname)){
+            userDB.setFirstname(firstname);
+        }
+
+        String lastname = updateEntity.getLastname();
+        if(Objects.nonNull(lastname)){
+            userDB.setLastname(lastname);
+        }
+
+        String password = updateEntity.getPassword();
+        if(Objects.nonNull(password)){
+            userDB.setPassword(passwordEncoder.encode(password));
+        }
+
+        return userDB;
+    }
+
+    public UserEntity validateUserId(Long id) {
+        validateID(id);
+        return userRepository.getByUserId(id).orElseThrow(()-> new UsernameNotFoundException(id+"-id not found!"));
     }
 }

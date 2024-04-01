@@ -10,6 +10,7 @@ import uz.ofs.constants.Role;
 import uz.ofs.constants.TableNames;
 import uz.ofs.entity.base.BaseEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = TableNames.OFS_USER)
-public class UserEntity extends BaseEntity implements UserDetails {
+public class UserEntity extends BaseEntity implements UserDetails , Serializable {
 
     private String firstname;
 

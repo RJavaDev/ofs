@@ -14,10 +14,9 @@ import uz.ofs.dto.request.FoodProductCreateDto;
 import uz.ofs.dto.request.FoodProductUpdateDto;
 import uz.ofs.entity.FoodProductEntity;
 import uz.ofs.service.FoodProductService;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class FoodProductController {
     private final FoodProductService service;
 
     @PostMapping("/add")
-    public ApiResponse<Object> add(@RequestBody FoodProductCreateDto dto){
+    public ApiResponse<Object> add(@RequestBody @Validated FoodProductCreateDto dto){
         FoodProductEntity entity = FoodProductConvert.convertToEntity(dto);
         boolean isAdd = service.add(entity);
 
@@ -60,8 +59,19 @@ public class FoodProductController {
                 .message(ResponseMessage.OK);
     }
 
+    @GetMapping("/get/amount-in-category/{id}")
+    public ApiResponse<Object> quantity(@PathVariable Long id){
+
+        Integer size = service.amountInCategory(id);
+
+        return ApiResponse.build()
+                .code(ResponseCode.OK)
+                .body(size)
+                .message(ResponseMessage.OK);
+    }
+
     @PatchMapping("/update")
-    public ApiResponse<Object> productUpdate(@RequestBody FoodProductUpdateDto dto){
+    public ApiResponse<Object> productUpdate(@RequestBody @Validated FoodProductUpdateDto dto){
 
         FoodProductEntity entity = FoodProductConvert.convertToEntity(dto);
         boolean isUpdate = service.update(entity);
@@ -79,7 +89,7 @@ public class FoodProductController {
 
         return ApiResponse.build()
                 .code(ResponseCode.OK)
-                .body(Boolean.TRUE)
+                .body(ResponseMessage.DELETE_SUCCESS_MESSAGE)
                 .message(ResponseMessage.OK);
     }
 

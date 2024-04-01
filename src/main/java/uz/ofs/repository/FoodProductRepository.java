@@ -25,4 +25,7 @@ public interface FoodProductRepository extends JpaRepository<FoodProductEntity, 
     @Modifying
     @Query(value = "UPDATE ofs_food_product SET status = 'DELETED' WHERE id=:id", nativeQuery = true)
     void delete(@Param("id") Long id);
+
+    @Query(value = "SELECT ofsfp.* FROM ofs_food_product ofsfp WHERE ofsfp.category_id = :categoryId AND ofsfp.status<>'DELETED'", nativeQuery = true)
+    List<FoodProductEntity> findAllByCategoryAmount(@Param("categoryId") Long id);
 }

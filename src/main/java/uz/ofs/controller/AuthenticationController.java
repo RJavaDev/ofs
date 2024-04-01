@@ -15,6 +15,7 @@ import uz.ofs.dto.request.UserCreateRequestDto;
 import uz.ofs.dto.response.TokenResponseDto;
 import uz.ofs.entity.UserEntity;
 import uz.ofs.service.AuthenticationService;
+import org.springframework.validation.annotation.Validated;
 
 
 @RestController
@@ -27,7 +28,7 @@ public class AuthenticationController {
 
     @Operation(summary = "User Registration", description = "This method is used for user registration")
     @PostMapping("/register")
-    public ApiResponse<Object> register(@RequestBody UserCreateRequestDto userDto) {
+    public ApiResponse<Object> register(@RequestBody @Validated UserCreateRequestDto userDto) {
 
         UserEntity userEntity = UserConvert.convertToEntity(userDto);
         TokenResponseDto register = service.register(userEntity);
@@ -40,7 +41,7 @@ public class AuthenticationController {
 
     @Operation(summary = "User Login", description = "This method is used for user authentication and login")
     @PostMapping("/login")
-    public ApiResponse<Object> authenticate(@RequestBody LoginRequestDto request) {
+    public ApiResponse<Object> authenticate(@RequestBody @Validated LoginRequestDto request) {
 
         TokenResponseDto authenticate = service.authenticate(request);
 
